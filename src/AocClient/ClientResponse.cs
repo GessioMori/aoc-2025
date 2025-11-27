@@ -1,8 +1,7 @@
-﻿namespace aoc_2025.AocClient
+﻿namespace aoc_2025.AocClient;
+
+public class ClientResponse
 {
-    public class ClientResponse
-    {
-        public ClientResponseType ResponseType { get; set; }
-        public string Content { get; set; } = string.Empty;
-    }
+    public ClientResponseType ResponseType { get; set; }
+    public string Content { get; set; } = string.Empty;
 }

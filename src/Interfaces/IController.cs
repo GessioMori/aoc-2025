@@ -1,7 +1,6 @@
-﻿namespace aoc_2025.Interfaces
+﻿namespace aoc_2025.Interfaces;
+
+public interface IController
 {
-    public interface IController
-    {
-        void Run();
-    }
+    void Run();
 }

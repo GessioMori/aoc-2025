@@ -1,9 +1,8 @@
 ﻿using aoc_2025.Classes;
 
-namespace aoc_2025.Interfaces
+namespace aoc_2025.Interfaces;
+
+public interface IRunner
 {
-    public interface IRunner
-    {
-        ExecutionResult Run(ISolution solution, int dayNumber, Part part, string input);
-    }
+    ExecutionResult Run(ISolution solution, int dayNumber, Part part, string input);
 }

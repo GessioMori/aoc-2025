@@ -1,21 +1,20 @@
-﻿namespace aoc_2025.Classes
+﻿namespace aoc_2025.Classes;
+
+public static class FileUtils
 {
-    public static class FileUtils
+    public static string? FindProjectFolder()
     {
-        public static string? FindProjectFolder()
+        DirectoryInfo? currentDir = new(AppContext.BaseDirectory);
+
+        while (currentDir != null)
         {
-            DirectoryInfo? currentDir = new(AppContext.BaseDirectory);
-
-            while (currentDir != null)
+            if (Directory.GetFiles(currentDir.FullName, "*.csproj").Length > 0)
             {
-                if (Directory.GetFiles(currentDir.FullName, "*.csproj").Length > 0)
-                {
-                    return currentDir.FullName;
-                }
-                currentDir = currentDir.Parent;
+                return currentDir.FullName;
             }
-
-            return null;
+            currentDir = currentDir.Parent;
         }
+
+        return null;
     }
 }

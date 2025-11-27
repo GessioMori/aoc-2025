@@ -1,8 +1,7 @@
-﻿namespace aoc_2025.Interfaces
+﻿namespace aoc_2025.Interfaces;
+
+public interface ISolution
 {
-    public interface ISolution
-    {
-        string RunPartA(string inputData);
-        string RunPartB(string inputData);
-    }
+    string RunPartA(string inputData);
+    string RunPartB(string inputData);
 }

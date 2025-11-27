@@ -1,11 +1,10 @@
-﻿namespace aoc_2025.Interfaces
+﻿namespace aoc_2025.Interfaces;
+
+public interface ISolutionManager
 {
-    public interface ISolutionManager
-    {
-        void CreateInitialFiles(int dayToInitialize, string inputContent);
-        bool IsDayAlreadyInitialized(int dayToInitialize);
-        ISolution? CreateSolutionInstance(int dayToRun);
-        string ReadInputFile(int dayNumber);
-        int[] GetAvailableSolutions();
-    }
+    void CreateInitialFiles(int dayToInitialize, string inputContent);
+    bool IsDayAlreadyInitialized(int dayToInitialize);
+    ISolution? CreateSolutionInstance(int dayToRun);
+    string ReadInputFile(int dayNumber);
+    int[] GetAvailableSolutions();
 }

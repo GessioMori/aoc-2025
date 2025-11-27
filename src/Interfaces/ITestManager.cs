@@ -1,10 +1,9 @@
 ﻿using aoc_2025.Classes;
 
-namespace aoc_2025.Interfaces
+namespace aoc_2025.Interfaces;
+
+public interface ITestManager
 {
-    public interface ITestManager
-    {
-        List<TestCase> Parse(int dayNumber);
-        int[] GetAvailableTests();
-    }
+    List<TestCase> Parse(int dayNumber);
+    int[] GetAvailableTests();
 }

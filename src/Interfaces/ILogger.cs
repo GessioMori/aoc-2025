@@ -1,7 +1,6 @@
-﻿namespace aoc_2025.Interfaces
+﻿namespace aoc_2025.Interfaces;
+
+public interface ILogger
 {
-    public interface ILogger
-    {
-        void Log(string message, LogSeverity logSeverity);
-    }
+    void Log(string message, LogSeverity logSeverity);
 }

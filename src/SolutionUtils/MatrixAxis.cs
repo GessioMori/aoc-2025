@@ -1,26 +1,25 @@
-﻿namespace aoc_2025.SolutionUtils
+﻿namespace aoc_2025.SolutionUtils;
+
+public class MatrixAxis
 {
-    public class MatrixAxis
+    private readonly string axisString;
+    private readonly (int, int)[] axisCoordinates;
+
+    public string AxisString { get => this.axisString; }
+
+    public MatrixAxis(string axisString, (int, int)[] axisCoordinates)
     {
-        private readonly string axisString;
-        private readonly (int, int)[] axisCoordinates;
+        this.axisString = axisString;
+        this.axisCoordinates = axisCoordinates;
+    }
 
-        public string AxisString { get => axisString; }
-
-        public MatrixAxis(string axisString, (int, int)[] axisCoordinates)
+    public (int, int) GetCoordinatesByAxisPosition(int position)
+    {
+        if (position < 0 || position > this.axisString.Length - 1)
         {
-            this.axisString = axisString;
-            this.axisCoordinates = axisCoordinates;
+            return (-1, -1);
         }
 
-        public (int, int) GetCoordinatesByAxisPosition(int position)
-        {
-            if (position < 0 || position > this.axisString.Length - 1)
-            {
-                return (-1, -1);
-            }
-
-            return this.axisCoordinates[position];
-        }
+        return this.axisCoordinates[position];
     }
 }
