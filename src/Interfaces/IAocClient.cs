@@ -1,6 +1,6 @@
-﻿using aoc_2024.AocClient;
+﻿using aoc_2025.AocClient;
 
-namespace aoc_2024.Interfaces
+namespace aoc_2025.Interfaces
 {
     public interface IAocClient
     {

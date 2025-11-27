@@ -1,8 +1,8 @@
-﻿namespace aoc_2024
+﻿namespace aoc_2025
 {
     public static class Consts
     {
-        public const int year = 2024;
+        public const int year = 2025;
         public const string baseUri = "https://adventofcode.com";
     }
 

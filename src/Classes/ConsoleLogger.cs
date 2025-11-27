@@ -1,7 +1,7 @@
-﻿using aoc_2024.Interfaces;
+﻿using aoc_2025.Interfaces;
 using Spectre.Console;
 
-namespace aoc_2024.Classes
+namespace aoc_2025.Classes
 {
     public class ConsoleLogger : ILogger
     {

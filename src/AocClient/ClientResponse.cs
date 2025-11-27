@@ -1,4 +1,4 @@
-﻿namespace aoc_2024.AocClient
+﻿namespace aoc_2025.AocClient
 {
     public class ClientResponse
     {

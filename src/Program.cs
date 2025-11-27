@@ -1,9 +1,9 @@
-﻿using aoc_2024.AocClient;
-using aoc_2024.Classes;
-using aoc_2024.Interfaces;
+﻿using aoc_2025.AocClient;
+using aoc_2025.Classes;
+using aoc_2025.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace aoc_2024
+namespace aoc_2025
 {
     public class Program
     {

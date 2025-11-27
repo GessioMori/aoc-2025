@@ -1,7 +1,7 @@
-﻿using aoc_2024.Interfaces;
+﻿using aoc_2025.Interfaces;
 using System.Net;
 
-namespace aoc_2024.AocClient
+namespace aoc_2025.AocClient
 {
     public class AocHttpClient : IAocClient, IDisposable
     {

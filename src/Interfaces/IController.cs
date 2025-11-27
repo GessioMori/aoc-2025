@@ -1,4 +1,4 @@
-﻿namespace aoc_2024.Interfaces
+﻿namespace aoc_2025.Interfaces
 {
     public interface IController
     {

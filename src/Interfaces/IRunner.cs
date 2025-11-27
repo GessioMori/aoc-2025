@@ -1,6 +1,6 @@
-﻿using aoc_2024.Classes;
+﻿using aoc_2025.Classes;
 
-namespace aoc_2024.Interfaces
+namespace aoc_2025.Interfaces
 {
     public interface IRunner
     {

@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace aoc_2024.SolutionUtils
+namespace aoc_2025.SolutionUtils
 {
     public static class TupleExtensions
     {
