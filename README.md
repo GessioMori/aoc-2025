@@ -1,8 +1,8 @@
-# Advent of Code 2024
+# Advent of Code 2025
 
-![ScreenShot](https://github.com/user-attachments/assets/59fd2185-9d84-4bd6-9cd2-bd9dce7f71a4)
+<img width="1033" height="495" alt="image" src="https://github.com/user-attachments/assets/7b7dd8ca-669d-4405-878d-594fa92d50a2" />
 
-A .NET 9 Console Application designed to streamline your Advent of Code 2024 experience. This toolkit helps you fetch daily inputs automatically and provides a framework to solve puzzles with ease.
+A .NET 10 Console Application designed to streamline your Advent of Code 2025 experience. This toolkit helps you fetch daily inputs automatically and provides a framework to solve puzzles with ease.
 
 ## Features
 
@@ -12,7 +12,7 @@ A .NET 9 Console Application designed to streamline your Advent of Code 2024 exp
 
 ## Prerequisites
 
-- [.NET 9 SDK](https://dotnet.microsoft.com/download) installed on your machine.
+- [.NET 10 SDK](https://dotnet.microsoft.com/download) installed on your machine.
 - A valid Advent of Code account with an active session cookie.
 
 ## Getting Started
@@ -20,8 +20,8 @@ A .NET 9 Console Application designed to streamline your Advent of Code 2024 exp
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/GessioMori/aoc-2024.git
-cd aoc-2024
+git clone https://github.com/GessioMori/aoc-2025.git
+cd aoc-2025
 ```
 
 ### 2. Configure Your Session Cookie
@@ -57,8 +57,8 @@ The application will automatically fetch the input for the selected day if it is
 ## Project Structure
 
 ```plaintext
-│   aoc-2024.csproj          # The project file defining dependencies and build settings.
-│   aoc-2024.sln             # The solution file for the project.
+│   aoc-2025.csproj          # The project file defining dependencies and build settings.
+│   aoc-2025.sln             # The solution file for the project.
 │   Consts.cs                # Contains constants used throughout the application.
 │   Program.cs               # The main entry point of the application.
 │
@@ -127,6 +127,6 @@ This project is licensed under the **The Unlicense**. For more details, refer to
 
 ---
 
-Enjoy solving the Advent of Code 2024 puzzles! 🎄
+Enjoy solving the Advent of Code 2025 puzzles! 🎄
 
 ---
