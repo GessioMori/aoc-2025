@@ -8,24 +8,18 @@ public class Solution02 : ISolution
 
     public string RunPartA(string inputData)
     {
-        IEnumerable<Range> ranges = ParseInput(inputData)
-            .SelectMany(range => SplitRangeInEqualLengths(GetNextMinEvenLengthNumber(range.Min), GetPreviousMaxEvenLengthNumber(range.Max)));
-
-        HashSet<long> invalidIds = [];
-
-        foreach (Range range in ranges)
-        {
-            IEnumerable<long> rangeInvalidIds = GetInvalidIdsInRange(range);
-
-            foreach (long invalidId in rangeInvalidIds) { invalidIds.Add(invalidId); }
-        }
-
-        return invalidIds.Sum().ToString();
+        return ParseInput(inputData)
+            .SelectMany(range => GetInvalidIdsInRange(range, true))
+            .Sum()
+            .ToString();
     }
 
     public string RunPartB(string inputData)
     {
-        throw new NotImplementedException();
+        return ParseInput(inputData)
+            .SelectMany(range => GetInvalidIdsInRange(range, false))
+            .Sum()
+            .ToString();
     }
 
     private static IEnumerable<Range> ParseInput(string inputData)
@@ -39,69 +33,56 @@ public class Solution02 : ISolution
             });
     }
 
-    private static long GetNextMinEvenLengthNumber(long number)
-    {
-        string stringNum = number.ToString();
-
-        if (stringNum.Length % 2 == 0) return number;
-
-        return long.Parse("1".PadRight(stringNum.Length + 1, '0'));
-    }
-
-    private static long GetPreviousMaxEvenLengthNumber(long number)
-    {
-        string stringNum = number.ToString();
-
-        if (stringNum.Length % 2 == 0) return number;
-        if (stringNum.Length == 1) return -1;
-
-        return long.Parse("9".PadRight(stringNum.Length - 1, '9'));
-    }
-
-    private static List<Range> SplitRangeInEqualLengths(long min, long max)
-    {
-        List<Range> ranges = [];
-
-        if (max == -1) return ranges;
-
-        if (min.ToString().Length == max.ToString().Length)
-        {
-            ranges.Add(new Range(min, max));
-            return ranges;
-        }
-
-        int currentLength = min.ToString().Length;
-        long currentMin = min;
-
-        while (currentLength <= max.ToString().Length)
-        {
-            ranges.Add(new Range(currentMin, Math.Min(long.Parse("9".PadRight(currentLength - 1, '9')), max)));
-            currentLength += 2;
-            currentMin = long.Parse("1".PadRight(currentLength, '0'));
-        }
-
-        return ranges;
-    }
-
-    private static List<long> GetInvalidIdsInRange(Range range)
+    private static List<long> GetInvalidIdsInRange(Range range, bool onlyTwoParts)
     {
         List<long> invalidIds = [];
-        string sMin = range.Min.ToString();
-        string sMax = range.Max.ToString();
-        int halfLenght = sMin.Length / 2;
 
-        long halfMin = long.Parse(sMin[..halfLenght]);
-        long halfMax = long.Parse(sMax[..halfLenght]);
-
-        for (long i = halfMin; i <= halfMax; i++)
+        for (long i = range.Min; i <= range.Max; i++)
         {
-            long value = long.Parse(i.ToString() + i.ToString());
-            if (value >= range.Min && value <= range.Max)
+            if (onlyTwoParts && CanBeSplittedInEqualParts(i, 2))
             {
-                invalidIds.Add(value);
+                invalidIds.Add(i);
+            }
+            else if(!onlyTwoParts)
+            {
+                for (int j = 2; j <= i.ToString().Length; j++)
+                {
+                    if (CanBeSplittedInEqualParts(i, j))
+                    {
+                        invalidIds.Add(i);
+                        break;
+                    }
+                }
             }
         }
 
         return invalidIds;
+    }
+
+    private static bool CanBeSplittedInEqualParts(long number, int partsCount)
+    {
+        string sNum = number.ToString();
+
+        if (partsCount <= 0 || sNum.Length % partsCount != 0)
+        {
+            return false;
+        }
+
+        int partLength = sNum.Length / partsCount;
+
+        string first = sNum[..partLength];
+
+        for (int i = 1; i < partsCount; i++)
+        {
+            if (!string.Equals(
+                    sNum.Substring(i * partLength, partLength),
+                    first,
+                    StringComparison.Ordinal))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
