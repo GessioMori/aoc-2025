@@ -65,17 +65,15 @@ public class TestManager : ITestManager
             }
             else
             {
-                string trimmedLine = line.Trim();
-
                 if (isReadingInput)
                 {
-                    if (trimmedLine != "[Empty]")
+                    if (line != "[Empty]")
                     {
                         if (!string.IsNullOrEmpty(currentTest.Input))
                         {
                             currentTest.Input += Environment.NewLine;
                         }
-                        currentTest.Input += trimmedLine;
+                        currentTest.Input += line;
                     }
                 }
                 else
@@ -83,13 +81,13 @@ public class TestManager : ITestManager
                     switch (currentKey)
                     {
                         case "TestNumber":
-                            currentTest.TestNumber = int.TryParse(trimmedLine, out int number) ? number : 0;
+                            currentTest.TestNumber = int.TryParse(line, out int number) ? number : 0;
                             break;
                         case "AnswerA":
-                            currentTest.AnswerA = trimmedLine == "[Empty]" ? null : trimmedLine;
+                            currentTest.AnswerA = line == "[Empty]" ? null : line;
                             break;
                         case "AnswerB":
-                            currentTest.AnswerB = trimmedLine == "[Empty]" ? null : trimmedLine;
+                            currentTest.AnswerB = line == "[Empty]" ? null : line;
                             break;
                     }
                 }
