@@ -37,6 +37,12 @@ public static class MatrixUtils
 
     #region CharMatrix
 
+    extension(char[][] matrix)
+    {
+        public int NumOfRows => matrix.Length;
+        public int NumOfColumns => matrix[0].Length;
+    }
+
     public static char[][] CreateCharMatrix(string textBlock)
     {
         string[] lines = ParseUtils.ParseIntoLines(textBlock);
@@ -194,13 +200,39 @@ public static class MatrixUtils
         return neighbors;
     }
 
+    public static (int, int) FirstInstanceOf(this char[][] matrix, char target)
+    {
+        for (int i = 0; i < matrix.NumOfColumns; i++)
+        {
+            for (int j = 0; j < matrix.NumOfRows; j++)
+            {
+                if (matrix[i][j] == target)
+                {
+                    return (j, i);
+                }
+            }
+        }
+
+        return (-1, -1);
+    }
+
     public static char? At(this char[][] matrix, int x, int y)
     {
-        if (y >= matrix.Length ||
-            x >= matrix[0].Length)
+        if (y >= matrix.Length || x >= matrix[0].Length)
+        {
             return null;
+        }
 
         return matrix[y][x];
+    }
+
+    public static char? At(this char[][] matrix, (int x, int y) position)
+    {
+        if (position.y >= matrix.Length ||
+            position.x >= matrix[0].Length)
+            return null;
+
+        return matrix[position.y][position.x];
     }
 
     public static bool SetAt(this char[][] matrix, int x, int y, char value)
