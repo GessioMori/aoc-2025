@@ -37,6 +37,12 @@ public static class MatrixUtils
 
     #region CharMatrix
 
+    extension(char[][] matrix)
+    {
+        public int NumOfRows => matrix.Length;
+        public int NumOfColumns => matrix[0].Length;
+    }
+
     public static char[][] CreateCharMatrix(string textBlock)
     {
         string[] lines = ParseUtils.ParseIntoLines(textBlock);
@@ -164,6 +170,79 @@ public static class MatrixUtils
         }
 
         return matrixDiagonals.ToArray();
+    }
+
+    public static char?[] GetNeighbors(this char[][] matrix, (int x, int y) position)
+    {
+        int rows = matrix.Length;
+        int cols = matrix[0].Length;
+
+        char?[] neighbors = new char?[8];
+        int index = 0;
+
+        for (int dx = -1; dx <= 1; dx++)
+        {
+            for (int dy = -1; dy <= 1; dy++)
+            {
+                if (dx == 0 && dy == 0)
+                    continue;
+
+                int nx = position.x + dx;
+                int ny = position.y + dy;
+
+                neighbors[index++] =
+                    (nx >= 0 && nx < cols && ny >= 0 && ny < rows)
+                        ? matrix[ny][nx]
+                        : null;
+            }
+        }
+
+        return neighbors;
+    }
+
+    public static (int, int) FirstInstanceOf(this char[][] matrix, char target)
+    {
+        for (int i = 0; i < matrix.NumOfColumns; i++)
+        {
+            for (int j = 0; j < matrix.NumOfRows; j++)
+            {
+                if (matrix[i][j] == target)
+                {
+                    return (j, i);
+                }
+            }
+        }
+
+        return (-1, -1);
+    }
+
+    public static char? At(this char[][] matrix, int x, int y)
+    {
+        if (y >= matrix.Length || x >= matrix[0].Length)
+        {
+            return null;
+        }
+
+        return matrix[y][x];
+    }
+
+    public static char? At(this char[][] matrix, (int x, int y) position)
+    {
+        if (position.y >= matrix.Length ||
+            position.x >= matrix[0].Length)
+            return null;
+
+        return matrix[position.y][position.x];
+    }
+
+    public static bool SetAt(this char[][] matrix, int x, int y, char value)
+    {
+        if (y >= matrix.Length ||
+            x >= matrix[0].Length)
+            return false;
+
+        matrix[y][x] = value;
+        return true;
     }
 
     #endregion
