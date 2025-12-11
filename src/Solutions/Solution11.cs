@@ -8,121 +8,93 @@ public class Solution11 : ISolution
     public string RunPartA(string inputData)
     {
         Dictionary<string, Node> nodes = ParseInput(inputData);
-        Dictionary<string, Dictionary<string, long>> memo = [];
+        Dictionary<Node, long> memo = [];
 
-        Dictionary<string, long> numOfPathsToOut = GetNumOfPathsToNode(nodes["out"], memo);
-
-        return numOfPathsToOut["you"].ToString();
+        return GetNumOfPathsFromTo(nodes["out"], nodes["you"], memo).ToString();
     }
 
     public string RunPartB(string inputData)
     {
         Dictionary<string, Node> nodes = ParseInput(inputData);
-        Dictionary<string, Dictionary<string, long>> memo = [];
 
         long numofPaths = 0;
 
         // svr -> fft -> dac -> out
-        long svrToFFt = GetNumOfPathsToNode(nodes["fft"], memo).TryGetValue("svr", out long v) ? v : 0;
-        long fftToDac = GetNumOfPathsToNode(nodes["dac"], memo).TryGetValue("fft", out v) ? v : 0;
-        long dacToOut = GetNumOfPathsToNode(nodes["out"], memo).TryGetValue("dac", out v) ? v : 0;
+        long svrToFFt = GetNumOfPathsFromTo(nodes["fft"], nodes["svr"], []);
+        long fftToDac = GetNumOfPathsFromTo(nodes["dac"], nodes["fft"], []);
+        long dacToOut = GetNumOfPathsFromTo(nodes["out"], nodes["dac"], []);
 
         numofPaths += svrToFFt * fftToDac * dacToOut;
 
         // svr -> dac -> fft -> out
-        long svrToDac = GetNumOfPathsToNode(nodes["dac"], memo).TryGetValue("svr", out v) ? v : 0;
-        long dacToFft = GetNumOfPathsToNode(nodes["fft"], memo).TryGetValue("dac", out v) ? v : 0;
-        long fftToOut = GetNumOfPathsToNode(nodes["out"], memo).TryGetValue("fft", out v) ? v : 0;
+        long svrToDac = GetNumOfPathsFromTo(nodes["dac"], nodes["svr"], []);
+        long dacToFft = GetNumOfPathsFromTo(nodes["fft"], nodes["dac"], []);
+        long fftToOut = GetNumOfPathsFromTo(nodes["out"], nodes["fft"], []);
 
         numofPaths += svrToDac * dacToFft * fftToOut;
 
         return numofPaths.ToString();
     }
 
-    private static Dictionary<string, long> GetNumOfPathsToNode(Node node, Dictionary<string, Dictionary<string, long>> memo)
+    private static long GetNumOfPathsFromTo(Node origin, Node target, Dictionary<Node, long> memo)
     {
-        if (memo.TryGetValue(node.Label, out Dictionary<string, long>? value))
+        if (origin == target)
+        {
+            return 1;
+        }
+
+        if (memo.TryGetValue(origin, out long value))
         {
             return value;
         }
 
-        List<(string, Dictionary<string, long>)> parentsDictsList = [];
+        long totalPathsFromOrigin = 0;
 
-        foreach (Node parent in node.Parents)
+        foreach (Node parent in origin.Parents)
         {
-            parentsDictsList.Add((parent.Label, GetNumOfPathsToNode(parent, memo)));
+            totalPathsFromOrigin += GetNumOfPathsFromTo(parent, target, memo);
         }
 
-        Dictionary<string, long> result = MergeNumOfPathsDictionaries(parentsDictsList);
-        memo.Add(node.Label, result);
-        return result;
-    }
-
-    private static Dictionary<string, long> MergeNumOfPathsDictionaries(List<(string, Dictionary<string, long>)> parentsDictsList)
-    {
-        Dictionary<string, long> result = [];
-
-        foreach ((string, Dictionary<string, long>) parentDict in parentsDictsList)
-        {
-            if (result.ContainsKey(parentDict.Item1))
-            {
-                result[parentDict.Item1] += 1;
-            }
-            else
-            {
-                result.Add(parentDict.Item1, 1);
-            }
-
-            foreach (KeyValuePair<string, long> ancestorsDict in parentDict.Item2)
-            {
-                if (result.ContainsKey(ancestorsDict.Key))
-                {
-                    result[ancestorsDict.Key] += ancestorsDict.Value;
-                }
-                else
-                {
-                    result.Add(ancestorsDict.Key, ancestorsDict.Value);
-                }
-            }
-        }
-
-        return result;
+        memo.Add(origin, totalPathsFromOrigin);
+        return totalPathsFromOrigin;
     }
 
     private static Dictionary<string, Node> ParseInput(string inputData)
     {
-        Dictionary<string, Node> nodes = [];
+        Dictionary<string, Node> nodes = new(StringComparer.Ordinal);
+
         string[] lines = ParseUtils
             .ParseIntoLines(inputData)
-            .ToList()
             .Append("out:")
             .ToArray();
 
-        foreach (string line in lines)
+        foreach (string? line in lines)
         {
-            string nodeLabel = line.Split(':', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)[0];
-            nodes.Add(nodeLabel, new Node() { Label = nodeLabel });
+            string label = line.Split(':', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)[0];
+            nodes[label] = new Node(label);
         }
 
-        foreach (string line in lines)
+        foreach (string? line in lines)
         {
             string[] parts = line.Split(':', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            string[] nodeNeighbors = parts.Length > 1 ?
-                parts[1].Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            string label = parts[0];
+
+            string[] neighbors = parts.Length > 1
+                ? parts[1].Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                 : [];
 
-            foreach (string neighbors in nodeNeighbors)
+            foreach (string neighbor in neighbors)
             {
-                nodes[neighbors].Parents.Add(nodes[parts[0]]);
+                nodes[neighbor].Parents.Add(nodes[label]);
             }
         }
 
         return nodes;
     }
 
-    private class Node()
+    private class Node(string label)
     {
-        public string Label = string.Empty;
-        public List<Node> Parents = [];
+        public string Label { get; } = label;
+        public List<Node> Parents { get; } = [];
     }
 }
