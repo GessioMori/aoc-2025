@@ -1,5 +1,6 @@
 using aoc_2025.Interfaces;
 using aoc_2025.SolutionUtils;
+using Google.OrTools.LinearSolver;
 using System.Numerics;
 using System.Text.RegularExpressions;
 
@@ -25,7 +26,53 @@ public partial class Solution10 : ISolution
 
     public string RunPartB(string inputData)
     {
-        throw new NotImplementedException();
+        int total = 0;
+
+        List<Machine> machines = ParseInput(inputData);
+
+        foreach (Machine machine in machines)
+        {
+            total += SolveLinearExpression(machine);
+        }
+
+        return total.ToString();
+    }
+
+    private static int SolveLinearExpression(Machine machine)
+    {
+        Solver solver = Solver.CreateSolver("SCIP");
+
+        int numOfVariables = machine.Buttons.Count;
+        int numOfEquations = machine.Joltage.Count;
+
+        Variable[] variables = Enumerable.Range(0, numOfVariables)
+                                  .Select(i => solver.MakeIntVar(0, int.MaxValue, $"x{i}"))
+                                  .ToArray();
+
+        for (int j = 0; j < numOfEquations; j++)
+        {
+            LinearExpr expr = new();
+            for (int i = 0; i < numOfVariables; i++)
+            {
+                if (machine.Buttons[i][j])
+                {
+                    expr += variables[i];
+                }
+            }
+            solver.Add(expr == machine.Joltage[j]);
+        }
+
+        LinearExpr objective = new();
+        for (int i = 0; i < numOfVariables; i++)
+        {
+            objective += variables[i];
+        }
+
+        solver.Minimize(objective);
+
+        solver.Solve();
+
+        return (int)solver.Objective().Value();
     }
 
     private static int GetMinPressesForMachine(Machine machine)
